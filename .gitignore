@@ -3,7 +3,6 @@
 *.xls
 
 # Generated data files (large files, regenerated from source data)
-embedded-data.js
 sample_data.json
 
 # Test/utility Python scripts (not part of core dashboard)
