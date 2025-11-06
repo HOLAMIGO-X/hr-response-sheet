@@ -572,10 +572,14 @@ function renderTopFeedbackTable() {
     const questions = questionMappings[currentLanguage];
 
     const feedbackData = currentData
-        .filter(row => row[questions.management_feedback] &&
-                      row[questions.management_feedback].trim() &&
-                      row[questions.management_feedback].toLowerCase() !== 'no' &&
-                      row[questions.management_feedback].toLowerCase() !== 'नहीं')
+        .filter(row => {
+            const feedback = row[questions.management_feedback];
+            if (!feedback) return false;
+            const feedbackStr = String(feedback).trim();
+            return feedbackStr &&
+                   feedbackStr.toLowerCase() !== 'no' &&
+                   feedbackStr.toLowerCase() !== 'नहीं';
+        })
         .slice(0, 10);
 
     if (feedbackData.length === 0) return '';
@@ -674,17 +678,26 @@ function renderTextAnalysis() {
     const questions = questionMappings[currentLanguage];
 
     const improvements = currentData
-        .filter(row => row[questions.clinic_improvements] &&
-                      row[questions.clinic_improvements].trim() &&
-                      row[questions.clinic_improvements].toLowerCase() !== 'no' &&
-                      row[questions.clinic_improvements] !== 'नहीं')
+        .filter(row => {
+            const improvement = row[questions.clinic_improvements];
+            if (!improvement) return false;
+            const improvementStr = String(improvement).trim();
+            return improvementStr &&
+                   improvementStr.toLowerCase() !== 'no' &&
+                   improvementStr !== 'नहीं' &&
+                   improvementStr !== '.';
+        })
         .slice(0, 15);
 
     const additionalHelp = currentData
-        .filter(row => row[questions.additional_help] &&
-                      row[questions.additional_help].trim() &&
-                      row[questions.additional_help].toLowerCase() !== 'no' &&
-                      row[questions.additional_help] !== 'नहीं')
+        .filter(row => {
+            const help = row[questions.additional_help];
+            if (!help) return false;
+            const helpStr = String(help).trim();
+            return helpStr &&
+                   helpStr.toLowerCase() !== 'no' &&
+                   helpStr !== 'नहीं';
+        })
         .slice(0, 15);
 
     return `
@@ -818,10 +831,16 @@ function getResponseCounts(question, possibleAnswers) {
     const counts = {};
     possibleAnswers.forEach(answer => counts[answer] = 0);
 
+    // If question is undefined or null, return empty counts
+    if (!question) {
+        console.warn('Question is undefined, returning empty counts');
+        return counts;
+    }
+
     currentData.forEach(row => {
         const answer = row[question];
         if (answer) {
-            const normalizedAnswer = answer.toString().trim();
+            const normalizedAnswer = String(answer).trim();
             possibleAnswers.forEach(possible => {
                 if (normalizedAnswer.toLowerCase() === possible.toLowerCase() ||
                     normalizedAnswer === possible) {
@@ -991,6 +1010,13 @@ function initializeAllCharts() {
 }
 
 function createPieChart(canvasId, data) {
+    // Skip if no data
+    const total = Object.values(data).reduce((a, b) => a + b, 0);
+    if (total === 0) {
+        console.warn(`Skipping chart ${canvasId} - no data`);
+        return;
+    }
+
     createChart(canvasId, {
         type: 'pie',
         data: {
@@ -1011,6 +1037,13 @@ function createPieChart(canvasId, data) {
 }
 
 function createDoughnutChart(canvasId, data) {
+    // Skip if no data
+    const total = Object.values(data).reduce((a, b) => a + b, 0);
+    if (total === 0) {
+        console.warn(`Skipping chart ${canvasId} - no data`);
+        return;
+    }
+
     createChart(canvasId, {
         type: 'doughnut',
         data: {
@@ -1031,6 +1064,13 @@ function createDoughnutChart(canvasId, data) {
 }
 
 function createBarChart(canvasId, data) {
+    // Skip if no data
+    const total = Object.values(data).reduce((a, b) => a + b, 0);
+    if (total === 0) {
+        console.warn(`Skipping chart ${canvasId} - no data`);
+        return;
+    }
+
     createChart(canvasId, {
         type: 'bar',
         data: {
