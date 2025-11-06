@@ -599,11 +599,25 @@ function renderInsights() {
 
 function countResponses(question, targetValues) {
     if (!question) return 0;
+
+    // Map Hindi responses to English equivalents
+    const hindiToEnglish = {
+        'हाँ': 'yes',
+        'नहीं': 'no',
+        'कभी-कभी': 'sometimes',
+        'शायद बाद में': 'maybe later'
+    };
+
     return currentData.filter(row => {
         const answer = row[question];
         if (!answer) return false;
-        const normalizedAnswer = answer.toString().toLowerCase().trim();
-        return targetValues.some(val => normalizedAnswer.includes(val.toLowerCase()));
+        const normalizedAnswer = answer.toString().trim();
+        const lowerAnswer = normalizedAnswer.toLowerCase();
+
+        // Map Hindi to English if needed
+        const mappedAnswer = hindiToEnglish[normalizedAnswer] || lowerAnswer;
+
+        return targetValues.some(val => mappedAnswer.includes(val.toLowerCase()));
     }).length;
 }
 
@@ -617,13 +631,31 @@ function getResponseCounts(question, possibleAnswers) {
         return counts;
     }
 
+    // Map Hindi responses to English equivalents
+    const hindiToEnglish = {
+        'हाँ': 'Yes',
+        'नहीं': 'No',
+        'कभी-कभी': 'Sometimes',
+        'शायद बाद में': 'Maybe later',
+        'yes': 'Yes',
+        'no': 'No',
+        'sometimes': 'Sometimes',
+        'maybe later': 'Maybe later'
+    };
+
     currentData.forEach(row => {
         const answer = row[question];
         if (answer) {
             const normalizedAnswer = String(answer).trim();
+            const lowerAnswer = normalizedAnswer.toLowerCase();
+
+            // Check if it's a Hindi response that needs mapping
+            let mappedAnswer = hindiToEnglish[normalizedAnswer] || hindiToEnglish[lowerAnswer] || normalizedAnswer;
+
+            // Count against the possible answers
             possibleAnswers.forEach(possible => {
-                if (normalizedAnswer.toLowerCase() === possible.toLowerCase() ||
-                    normalizedAnswer === possible) {
+                if (mappedAnswer.toLowerCase() === possible.toLowerCase() ||
+                    mappedAnswer === possible) {
                     counts[possible]++;
                 }
             });
