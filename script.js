@@ -71,118 +71,17 @@ const questionMappings = {
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
-    initializeFileUpload();
     initializeLanguageToggle();
     initializeExportButtons();
 
-    // Auto-load embedded data if available
+    // Load embedded data
     if (typeof embeddedData !== 'undefined') {
-        console.log('Embedded data found, loading English data by default');
+        console.log('Loading English data...');
         processData(embeddedData.english);
-
-        // Update file info
-        const fileInfo = document.getElementById('fileInfo');
-        fileInfo.innerHTML = '<strong>Data:</strong> English Version (95 responses) - Pre-loaded';
-        fileInfo.classList.add('active');
+    } else {
+        console.error('Embedded data not found!');
     }
 });
-
-// File Upload Handling
-function initializeFileUpload() {
-    const fileInput = document.getElementById('fileInput');
-    const uploadBox = document.querySelector('.upload-box');
-
-    fileInput.addEventListener('change', handleFileSelect);
-
-    uploadBox.addEventListener('dragover', (e) => {
-        e.preventDefault();
-        uploadBox.classList.add('drag-over');
-    });
-
-    uploadBox.addEventListener('dragleave', () => {
-        uploadBox.classList.remove('drag-over');
-    });
-
-    uploadBox.addEventListener('drop', (e) => {
-        e.preventDefault();
-        uploadBox.classList.remove('drag-over');
-        const files = e.dataTransfer.files;
-        if (files.length > 0) {
-            handleFile(files[0]);
-        }
-    });
-}
-
-function handleFileSelect(event) {
-    const file = event.target.files[0];
-    if (file) {
-        handleFile(file);
-    }
-}
-
-function handleFile(file) {
-    const fileInfo = document.getElementById('fileInfo');
-    fileInfo.innerHTML = `<strong>File:</strong> ${file.name} (${(file.size / 1024).toFixed(2)} KB)`;
-    fileInfo.classList.add('active');
-
-    const reader = new FileReader();
-
-    if (file.name.endsWith('.csv')) {
-        reader.onload = (e) => {
-            const text = e.target.result;
-            parseCSV(text);
-        };
-        reader.readAsText(file);
-    } else if (file.name.endsWith('.xlsx') || file.name.endsWith('.xls')) {
-        reader.onload = (e) => {
-            const data = new Uint8Array(e.target.result);
-            const workbook = XLSX.read(data, { type: 'array' });
-            const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
-            const jsonData = XLSX.utils.sheet_to_json(firstSheet);
-            processData(jsonData);
-        };
-        reader.readAsArrayBuffer(file);
-    }
-}
-
-function parseCSV(text) {
-    const lines = text.split('\n');
-    const headers = lines[0].split(',').map(h => h.trim().replace(/^"|"$/g, ''));
-    const data = [];
-
-    for (let i = 1; i < lines.length; i++) {
-        if (lines[i].trim()) {
-            const values = parseCSVLine(lines[i]);
-            const row = {};
-            headers.forEach((header, index) => {
-                row[header] = values[index] || '';
-            });
-            data.push(row);
-        }
-    }
-
-    processData(data);
-}
-
-function parseCSVLine(line) {
-    const result = [];
-    let current = '';
-    let inQuotes = false;
-
-    for (let i = 0; i < line.length; i++) {
-        const char = line[i];
-        if (char === '"') {
-            inQuotes = !inQuotes;
-        } else if (char === ',' && !inQuotes) {
-            result.push(current.trim());
-            current = '';
-        } else {
-            current += char;
-        }
-    }
-    result.push(current.trim());
-    return result;
-}
 
 function processData(data) {
     currentData = data;
@@ -240,26 +139,14 @@ function initializeLanguageToggle() {
         btn.addEventListener('click', () => {
             const selectedLang = btn.dataset.lang;
 
-            // Check if embedded data is available
-            if (typeof embeddedData !== 'undefined') {
-                langButtons.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
+            langButtons.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
 
-                // Load the corresponding embedded data
-                if (selectedLang === 'english') {
-                    processData(embeddedData.english);
-                    const fileInfo = document.getElementById('fileInfo');
-                    fileInfo.innerHTML = '<strong>Data:</strong> English Version (95 responses) - Pre-loaded';
-                    fileInfo.classList.add('active');
-                } else if (selectedLang === 'hindi') {
-                    processData(embeddedData.hindi);
-                    const fileInfo = document.getElementById('fileInfo');
-                    fileInfo.innerHTML = '<strong>Data:</strong> Hindi Version (121 responses) - Pre-loaded';
-                    fileInfo.classList.add('active');
-                }
-            } else {
-                // If no embedded data, show upload message
-                alert('To switch languages, please upload the corresponding file (English or Hindi version)');
+            // Load the corresponding embedded data
+            if (selectedLang === 'english' && embeddedData) {
+                processData(embeddedData.english);
+            } else if (selectedLang === 'hindi' && embeddedData) {
+                processData(embeddedData.hindi);
             }
         });
     });
