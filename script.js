@@ -74,6 +74,17 @@ document.addEventListener('DOMContentLoaded', () => {
     initializeFileUpload();
     initializeLanguageToggle();
     initializeExportButtons();
+
+    // Auto-load embedded data if available
+    if (typeof embeddedData !== 'undefined') {
+        console.log('Embedded data found, loading English data by default');
+        processData(embeddedData.english);
+
+        // Update file info
+        const fileInfo = document.getElementById('fileInfo');
+        fileInfo.innerHTML = '<strong>Data:</strong> English Version (95 responses) - Pre-loaded';
+        fileInfo.classList.add('active');
+    }
 });
 
 // File Upload Handling
@@ -227,9 +238,29 @@ function initializeLanguageToggle() {
     const langButtons = document.querySelectorAll('.lang-btn');
     langButtons.forEach(btn => {
         btn.addEventListener('click', () => {
-            langButtons.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            alert('To switch languages, please upload the corresponding file (English or Hindi version)');
+            const selectedLang = btn.dataset.lang;
+
+            // Check if embedded data is available
+            if (typeof embeddedData !== 'undefined') {
+                langButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                // Load the corresponding embedded data
+                if (selectedLang === 'english') {
+                    processData(embeddedData.english);
+                    const fileInfo = document.getElementById('fileInfo');
+                    fileInfo.innerHTML = '<strong>Data:</strong> English Version (95 responses) - Pre-loaded';
+                    fileInfo.classList.add('active');
+                } else if (selectedLang === 'hindi') {
+                    processData(embeddedData.hindi);
+                    const fileInfo = document.getElementById('fileInfo');
+                    fileInfo.innerHTML = '<strong>Data:</strong> Hindi Version (121 responses) - Pre-loaded';
+                    fileInfo.classList.add('active');
+                }
+            } else {
+                // If no embedded data, show upload message
+                alert('To switch languages, please upload the corresponding file (English or Hindi version)');
+            }
         });
     });
 }
