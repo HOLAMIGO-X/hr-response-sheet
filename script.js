@@ -298,7 +298,6 @@ function renderDetailedTables() {
         </div>
 
         ${renderResponseSummaryTable()}
-        ${renderTopFeedbackTable()}
     `;
 }
 
