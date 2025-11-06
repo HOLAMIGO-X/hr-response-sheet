@@ -64,6 +64,9 @@ print(f"  Hindi responses: {len(df_hindi_renamed)}")
 print(f"  Total combined: {len(df_combined)}")
 
 # Convert to JSON for embedding
+# Replace NaN/NaT with None (null in JSON)
+import numpy as np
+df_combined = df_combined.replace({np.nan: None})
 combined_data = df_combined.to_dict('records')
 
 # Create JavaScript file with combined data
