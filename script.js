@@ -1,83 +1,50 @@
 // Global variables
 let currentData = null;
-let currentLanguage = 'english';
 let chartInstances = [];
 
-// Comprehensive question mappings for English and Hindi
-const questionMappings = {
-    english: {
-        timestamp: 'Timestamp',
-        email: 'Email address',
-        name: 'Name and Employee ID',
-        tablet_working: 'Is the tablet working well for consultations?',
-        internet_problems: 'Do you face internet problems during consultations?',
-        tablet_knowledge: 'Do you know how to use the tablet?',
-        quick_help: 'If tablet or internet has a problem, do you get help quickly?',
-        doctor_respectful: 'Are the doctors nice and respectful during consultations?',
-        partner_problems: 'Do you face any problems working with the partner staff in the clinic?  ',
-        clinic_timings: 'Are you comfortable with the current clinic timings? ',
-        timing_changes: 'If not, please tell us what timing changes would help you work better:  ',
-        explain_advice: 'Are you able to explain doctor\'s advice to patients clearly?',
-        clinic_clean: 'Is your clinic clean and in a good condition?',
-        feel_safe: 'Do you feel safe working alone in the clinic?',
-        medicines_available: 'Do you get all the medicines you need at the clinic?',
-        managers_helpful: 'Are your DCs and field managers helpful?',
-        monthly_target: 'Are you able to complete your monthly target?',
-        patient_behavior: 'Do patients behave well with you?',
-        patient_trust: 'Do patients trust you at the clinic?',
-        camp_help: 'Do you get help during health diagnostic camps?',
-        equipment_working: 'Are all the essential equipment in the clinic working properly?',
-        additional_training: 'Do you require any additional training?',
-        proud_of_work: 'Do you feel proud of your work?',
-        career_growth: 'Do you feel you can grow in your career while working at M-Swasth? ',
-        recommend_rating: 'Would you tell a friend to work here? (Rate from 1 to 10)',
-        distance: 'How far is the clinic from your residence? (in meters/ kilometers)',
-        additional_help: 'Any additional help you require to work better?',
-        clinic_improvements: 'Things that can make your clinic better',
-        management_feedback: 'Any feedback for the management'
-    },
-    hindi: {
-        timestamp: 'Timestamp',
-        email: 'Email address',
-        name: 'नाम  और  Employee ID ',
-        tablet_working: 'क्या टैबलेट डॉक्टर से बात करने के लिए ठीक से काम कर रहा है? ',
-        internet_problems: 'क्या आपको डॉक्टर से बात करते समय इंटरनेट संबंधी समस्याओं का सामना करना पड़ता है? ',
-        tablet_knowledge: 'क्या आप टैबलेट का उपयोग करना जानते हैं? ',
-        quick_help: 'यदि टैबलेट या इंटरनेट में कोई समस्या आती है तो क्या आपको तुरंत सहायता मिल जाती है? ',
-        doctor_respectful: 'क्या डॉक्टर वीडियो कॉल पर अच्छे और सम्मानजनक हैं? ',
-        explain_advice: 'क्या आप मरीज़ को डॉक्टर की सलाह स्पष्ट रूप से समझा सकते हैं? ',
-        clinic_clean: 'क्या आपका क्लिनिक साफ-सुथरा और अच्छी स्थिति में है? ',
-        equipment_working: 'क्या पंखे,और लाइट सही से काम करते हैं?',
-        feel_safe: 'क्या आप क्लिनिक में अकेले काम करते हुए सुरक्षित महसूस करते हैं? ',
-        medicines_available: 'क्या आपको क्लिनिक में सभी आवश्यक दवाइयां मिल जाती हैं? ',
-        managers_helpful: 'क्या आपका डीसी या फील्ड मैनेजर मददगार है? ',
-        monthly_target: 'क्या आप अपना मासिक लक्ष्य पूरा कर पाते हैं? ',
-        patient_behavior: 'क्या मरीज़ आपके साथ अच्छा व्यवहार करते हैं? ',
-        patient_trust: 'क्या मरीज़ क्लिनिक में आप पर भरोसा करते हैं? ',
-        camp_help: 'क्या आपको हेल्थ डायग्नोस्टिक कैंप्स के दौरान सहायता मिलती है? ',
-        partner_problems: 'क्या आपको क्लिनिक में पार्टनर स्टाफ के साथ काम करने में कोई समस्या होती है?',
-        clinic_timings: 'क्या आप क्लिनिक के समय से संतुष्ट हैं?',
-        timing_changes: 'यदि नहीं, तो कृपया हमें बताएं कि क्लिनिक के समय में क्या बदलाव आपके कार्य को बेहतर बनाने में मदद करेंगे?',
-        tablet_training: 'क्या आपको टैबलेट का उपयोग करने और क्लिनिक में काम करने का प्रशिक्षण मिला था? ',
-        additional_training: 'क्या आपको किसी अतिरिक्त प्रशिक्षण की आवश्यकता है? ',
-        proud_of_work: 'क्या आपको अपने काम पर गर्व महसूस होता है? ',
-        recommend_rating: 'क्या आप अपने किसी मित्र को यहां काम करने के लिए कहेंगे? (1 से 10 तक रेटिंग दें) ',
-        career_growth: 'क्या आप एम-स्वस्थ में काम करते हुए अपने करियर में आगे बढ़ पा रहे हैं? ',
-        additional_help: 'क्या आपको बेहतर काम करने के लिए किसी अतिरिक्त सहायता की आवश्यकता है? ',
-        clinic_improvements: 'ऐसी चीजें जो आपके क्लिनिक को बेहतर बना सकती हैं: ',
-        management_feedback: 'प्रबंधन को कोई प्रतिक्रिया: '
-    }
+// Question mappings (now using English column names for combined data)
+const questions = {
+    timestamp: 'Timestamp',
+    email: 'Email address',
+    name: 'Name and Employee ID',
+    tablet_working: 'Is the tablet working well for consultations?',
+    internet_problems: 'Do you face internet problems during consultations?',
+    tablet_knowledge: 'Do you know how to use the tablet?',
+    quick_help: 'If tablet or internet has a problem, do you get help quickly?',
+    doctor_respectful: 'Are the doctors nice and respectful during consultations?',
+    partner_problems: 'Do you face any problems working with the partner staff in the clinic?  ',
+    clinic_timings: 'Are you comfortable with the current clinic timings? ',
+    timing_changes: 'If not, please tell us what timing changes would help you work better:  ',
+    explain_advice: 'Are you able to explain doctor\'s advice to patients clearly?',
+    clinic_clean: 'Is your clinic clean and in a good condition?',
+    feel_safe: 'Do you feel safe working alone in the clinic?',
+    medicines_available: 'Do you get all the medicines you need at the clinic?',
+    managers_helpful: 'Are your DCs and field managers helpful?',
+    monthly_target: 'Are you able to complete your monthly target?',
+    patient_behavior: 'Do patients behave well with you?',
+    patient_trust: 'Do patients trust you at the clinic?',
+    camp_help: 'Do you get help during health diagnostic camps?',
+    equipment_working: 'Are all the essential equipment in the clinic working properly?',
+    additional_training: 'Do you require any additional training?',
+    proud_of_work: 'Do you feel proud of your work?',
+    career_growth: 'Do you feel you can grow in your career while working at M-Swasth? ',
+    recommend_rating: 'Would you tell a friend to work here? (Rate from 1 to 10)',
+    distance: 'How far is the clinic from your residence? (in meters/ kilometers)',
+    additional_help: 'Any additional help you require to work better?',
+    clinic_improvements: 'Things that can make your clinic better',
+    management_feedback: 'Any feedback for the management',
+    language: 'Language'
 };
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
-    initializeLanguageToggle();
     initializeExportButtons();
 
-    // Load embedded data
+    // Load combined embedded data
     if (typeof embeddedData !== 'undefined') {
-        console.log('Loading English data...');
-        processData(embeddedData.english);
+        console.log('Loading combined data...');
+        console.log(`Total responses: ${embeddedData.length}`);
+        processData(embeddedData);
     } else {
         console.error('Embedded data not found!');
     }
@@ -85,71 +52,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function processData(data) {
     currentData = data;
-    detectLanguage(data);
+    console.log('Processing combined data...');
+    console.log('Available Columns:', Object.keys(data[0]));
     renderDashboard();
-}
-
-function detectLanguage(data) {
-    if (data.length > 0) {
-        const firstRow = data[0];
-        const columns = Object.keys(firstRow);
-        const hasHindi = columns.some(col => /[\u0900-\u097F]/.test(col));
-        currentLanguage = hasHindi ? 'hindi' : 'english';
-
-        // Debug: Log detected columns
-        console.log('Detected Language:', currentLanguage);
-        console.log('Available Columns:', columns);
-
-        // Verify key mappings exist
-        const questions = questionMappings[currentLanguage];
-        const missingMappings = [];
-        Object.keys(questions).forEach(key => {
-            const columnName = questions[key];
-            if (columnName && !columns.includes(columnName)) {
-                // Try to find similar column
-                const similar = columns.find(col =>
-                    col.toLowerCase().includes(columnName.toLowerCase().substring(0, 20)) ||
-                    columnName.toLowerCase().includes(col.toLowerCase().substring(0, 20))
-                );
-                if (similar) {
-                    console.log(`Mapping mismatch for ${key}: Expected "${columnName}", found similar "${similar}"`);
-                } else {
-                    missingMappings.push({key, expected: columnName});
-                }
-            }
-        });
-
-        if (missingMappings.length > 0) {
-            console.warn('Missing column mappings:', missingMappings);
-        }
-
-        document.querySelectorAll('.lang-btn').forEach(btn => {
-            btn.classList.remove('active');
-            if (btn.dataset.lang === currentLanguage) {
-                btn.classList.add('active');
-            }
-        });
-    }
-}
-
-// Language Toggle
-function initializeLanguageToggle() {
-    const langButtons = document.querySelectorAll('.lang-btn');
-    langButtons.forEach(btn => {
-        btn.addEventListener('click', () => {
-            const selectedLang = btn.dataset.lang;
-
-            langButtons.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-
-            // Load the corresponding embedded data
-            if (selectedLang === 'english' && embeddedData) {
-                processData(embeddedData.english);
-            } else if (selectedLang === 'hindi' && embeddedData) {
-                processData(embeddedData.hindi);
-            }
-        });
-    });
 }
 
 // Render Dashboard
@@ -176,7 +81,10 @@ function renderDashboard() {
 
 function renderStats() {
     const totalResponses = currentData.length;
-    const questions = questionMappings[currentLanguage];
+
+    // Count by language
+    const englishCount = currentData.filter(row => row[questions.language] === 'English').length;
+    const hindiCount = currentData.filter(row => row[questions.language] === 'Hindi').length;
 
     // Calculate metrics
     const recommendScores = currentData
@@ -231,44 +139,44 @@ function renderStats() {
     return `
         <div class="stats-grid">
             <div class="stat-card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-                <h3>${currentLanguage === 'english' ? 'Total Responses' : 'कुल प्रतिक्रियाएं'}</h3>
+                <h3>Total Responses</h3>
                 <div class="value">${totalResponses}</div>
-                <div class="label">${currentLanguage === 'english' ? 'Feedback Submissions' : 'फीडबैक सबमिशन'}</div>
+                <div class="label">Combined (English: ${englishCount} + Hindi: ${hindiCount})</div>
             </div>
             <div class="stat-card" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
-                <h3>${currentLanguage === 'english' ? 'NPS Score' : 'एनपीएस स्कोर'}</h3>
+                <h3>NPS Score</h3>
                 <div class="value">${avgRecommendation}/10</div>
-                <div class="label">${currentLanguage === 'english' ? 'Average Recommendation' : 'औसत सिफारिश'}</div>
+                <div class="label">Average Recommendation</div>
             </div>
             <div class="stat-card" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
-                <h3>${currentLanguage === 'english' ? 'Satisfaction Rate' : 'संतुष्टि दर'}</h3>
+                <h3>Satisfaction Rate</h3>
                 <div class="value">${satisfactionRate}%</div>
-                <div class="label">${currentLanguage === 'english' ? 'Positive Responses' : 'सकारात्मक उत्तर'}</div>
+                <div class="label">Positive Responses</div>
             </div>
             <div class="stat-card" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
-                <h3>${currentLanguage === 'english' ? 'Target Achievement' : 'लक्ष्य उपलब्धि'}</h3>
+                <h3>Target Achievement</h3>
                 <div class="value">${targetPercentage}%</div>
-                <div class="label">${currentLanguage === 'english' ? 'Meeting Monthly Targets' : 'मासिक लक्ष्य पूरा'}</div>
+                <div class="label">Meeting Monthly Targets</div>
             </div>
             <div class="stat-card" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">
-                <h3>${currentLanguage === 'english' ? 'Training Needs' : 'प्रशिक्षण आवश्यकता'}</h3>
+                <h3>Training Needs</h3>
                 <div class="value">${trainingPercentage}%</div>
-                <div class="label">${currentLanguage === 'english' ? 'Need Additional Training' : 'अतिरिक्त प्रशिक्षण चाहिए'}</div>
+                <div class="label">Need Additional Training</div>
             </div>
             <div class="stat-card" style="background: linear-gradient(135deg, #30cfd0 0%, #330867 100%);">
-                <h3>${currentLanguage === 'english' ? 'Internet Issues' : 'इंटरनेट समस्याएं'}</h3>
+                <h3>Internet Issues</h3>
                 <div class="value">${internetPercentage}%</div>
-                <div class="label">${currentLanguage === 'english' ? 'Face Connectivity Issues' : 'कनेक्टिविटी समस्याएं'}</div>
+                <div class="label">Face Connectivity Issues</div>
             </div>
             <div class="stat-card" style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);">
-                <h3>${currentLanguage === 'english' ? 'Career Growth' : 'करियर विकास'}</h3>
+                <h3>Career Growth</h3>
                 <div class="value">${careerPercentage}%</div>
-                <div class="label">${currentLanguage === 'english' ? 'See Career Growth' : 'करियर विकास देखते हैं'}</div>
+                <div class="label">See Career Growth</div>
             </div>
             <div class="stat-card" style="background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);">
-                <h3>${currentLanguage === 'english' ? 'Data Quality' : 'डेटा गुणवत्ता'}</h3>
+                <h3>Data Quality</h3>
                 <div class="value">${((recommendScores.length / totalResponses) * 100).toFixed(0)}%</div>
-                <div class="label">${currentLanguage === 'english' ? 'Complete Responses' : 'पूर्ण प्रतिक्रियाएं'}</div>
+                <div class="label">Complete Responses</div>
             </div>
         </div>
     `;
@@ -282,127 +190,127 @@ function renderAllCharts() {
                 <line x1="12" y1="20" x2="12" y2="4"></line>
                 <line x1="6" y1="20" x2="6" y2="14"></line>
             </svg>
-            <h2>${currentLanguage === 'english' ? 'Comprehensive Visual Analytics' : 'व्यापक दृश्य विश्लेषण'}</h2>
+            <h2>Comprehensive Visual Analytics</h2>
         </div>
 
         <!-- Technology & Infrastructure -->
-        <h3 class="category-title">${currentLanguage === 'english' ? '💻 Technology & Infrastructure' : '💻 प्रौद्योगिकी और बुनियादी ढांचा'}</h3>
+        <h3 class="category-title">💻 Technology & Infrastructure</h3>
         <div class="chart-grid">
             <div class="chart-container">
-                <h3>${currentLanguage === 'english' ? 'Tablet Functionality' : 'टैबलेट कार्यक्षमता'}</h3>
+                <h3>Tablet Functionality</h3>
                 <div class="chart-wrapper"><canvas id="tabletWorkingChart"></canvas></div>
             </div>
             <div class="chart-container">
-                <h3>${currentLanguage === 'english' ? 'Internet Connectivity Issues' : 'इंटरनेट कनेक्टिविटी समस्याएं'}</h3>
+                <h3>Internet Connectivity Issues</h3>
                 <div class="chart-wrapper"><canvas id="internetProblemsChart"></canvas></div>
             </div>
             <div class="chart-container">
-                <h3>${currentLanguage === 'english' ? 'Tablet Usage Knowledge' : 'टैबलेट उपयोग ज्ञान'}</h3>
+                <h3>Tablet Usage Knowledge</h3>
                 <div class="chart-wrapper"><canvas id="tabletKnowledgeChart"></canvas></div>
             </div>
             <div class="chart-container">
-                <h3>${currentLanguage === 'english' ? 'Technical Support Response' : 'तकनीकी सहायता प्रतिक्रिया'}</h3>
+                <h3>Technical Support Response</h3>
                 <div class="chart-wrapper"><canvas id="quickHelpChart"></canvas></div>
             </div>
             <div class="chart-container">
-                <h3>${currentLanguage === 'english' ? 'Equipment Status' : 'उपकरण स्थिति'}</h3>
+                <h3>Equipment Status</h3>
                 <div class="chart-wrapper"><canvas id="equipmentChart"></canvas></div>
             </div>
         </div>
 
         <!-- Clinical Operations -->
-        <h3 class="category-title">${currentLanguage === 'english' ? '🏥 Clinical Operations' : '🏥 नैदानिक ​​संचालन'}</h3>
+        <h3 class="category-title">🏥 Clinical Operations</h3>
         <div class="chart-grid">
             <div class="chart-container">
-                <h3>${currentLanguage === 'english' ? 'Clinic Cleanliness & Condition' : 'क्लिनिक स्वच्छता और स्थिति'}</h3>
+                <h3>Clinic Cleanliness & Condition</h3>
                 <div class="chart-wrapper"><canvas id="clinicCleanChart"></canvas></div>
             </div>
             <div class="chart-container">
-                <h3>${currentLanguage === 'english' ? 'Medicine Availability' : 'दवा उपलब्धता'}</h3>
+                <h3>Medicine Availability</h3>
                 <div class="chart-wrapper"><canvas id="medicinesChart"></canvas></div>
             </div>
             <div class="chart-container">
-                <h3>${currentLanguage === 'english' ? 'Clinic Timing Satisfaction' : 'क्लिनिक समय संतुष्टि'}</h3>
+                <h3>Clinic Timing Satisfaction</h3>
                 <div class="chart-wrapper"><canvas id="timingChart"></canvas></div>
             </div>
             <div class="chart-container">
-                <h3>${currentLanguage === 'english' ? 'Diagnostic Camp Support' : 'डायग्नोस्टिक कैंप सहायता'}</h3>
+                <h3>Diagnostic Camp Support</h3>
                 <div class="chart-wrapper"><canvas id="campHelpChart"></canvas></div>
             </div>
         </div>
 
         <!-- Doctor & Team Interaction -->
-        <h3 class="category-title">${currentLanguage === 'english' ? '👨‍⚕️ Doctor & Team Interaction' : '👨‍⚕️ डॉक्टर और टीम संपर्क'}</h3>
+        <h3 class="category-title">👨‍⚕️ Doctor & Team Interaction</h3>
         <div class="chart-grid">
             <div class="chart-container">
-                <h3>${currentLanguage === 'english' ? 'Doctor Behavior & Respect' : 'डॉक्टर व्यवहार और सम्मान'}</h3>
+                <h3>Doctor Behavior & Respect</h3>
                 <div class="chart-wrapper"><canvas id="doctorRespectChart"></canvas></div>
             </div>
             <div class="chart-container">
-                <h3>${currentLanguage === 'english' ? 'Advice Communication Clarity' : 'सलाह संचार स्पष्टता'}</h3>
+                <h3>Advice Communication Clarity</h3>
                 <div class="chart-wrapper"><canvas id="explainAdviceChart"></canvas></div>
             </div>
             <div class="chart-container">
-                <h3>${currentLanguage === 'english' ? 'Partner Staff Collaboration' : 'पार्टनर स्टाफ सहयोग'}</h3>
+                <h3>Partner Staff Collaboration</h3>
                 <div class="chart-wrapper"><canvas id="partnerProblemsChart"></canvas></div>
             </div>
             <div class="chart-container">
-                <h3>${currentLanguage === 'english' ? 'Manager Helpfulness' : 'प्रबंधक सहायता'}</h3>
+                <h3>Manager Helpfulness</h3>
                 <div class="chart-wrapper"><canvas id="managersChart"></canvas></div>
             </div>
         </div>
 
         <!-- Patient Relations -->
-        <h3 class="category-title">${currentLanguage === 'english' ? '🤝 Patient Relations' : '🤝 रोगी संबंध'}</h3>
+        <h3 class="category-title">🤝 Patient Relations</h3>
         <div class="chart-grid">
             <div class="chart-container">
-                <h3>${currentLanguage === 'english' ? 'Patient Behavior' : 'रोगी व्यवहार'}</h3>
+                <h3>Patient Behavior</h3>
                 <div class="chart-wrapper"><canvas id="patientBehaviorChart"></canvas></div>
             </div>
             <div class="chart-container">
-                <h3>${currentLanguage === 'english' ? 'Patient Trust Levels' : 'रोगी विश्वास स्तर'}</h3>
+                <h3>Patient Trust Levels</h3>
                 <div class="chart-wrapper"><canvas id="patientTrustChart"></canvas></div>
             </div>
         </div>
 
         <!-- Employee Satisfaction & Growth -->
-        <h3 class="category-title">${currentLanguage === 'english' ? '📈 Employee Satisfaction & Growth' : '📈 कर्मचारी संतुष्टि और विकास'}</h3>
+        <h3 class="category-title">📈 Employee Satisfaction & Growth</h3>
         <div class="chart-grid">
             <div class="chart-container">
-                <h3>${currentLanguage === 'english' ? 'Workplace Safety Perception' : 'कार्यस्थल सुरक्षा धारणा'}</h3>
+                <h3>Workplace Safety Perception</h3>
                 <div class="chart-wrapper"><canvas id="safetyChart"></canvas></div>
             </div>
             <div class="chart-container">
-                <h3>${currentLanguage === 'english' ? 'Work Pride & Satisfaction' : 'काम का गर्व और संतुष्टि'}</h3>
+                <h3>Work Pride & Satisfaction</h3>
                 <div class="chart-wrapper"><canvas id="proudChart"></canvas></div>
             </div>
             <div class="chart-container">
-                <h3>${currentLanguage === 'english' ? 'Monthly Target Achievement' : 'मासिक लक्ष्य उपलब्धि'}</h3>
+                <h3>Monthly Target Achievement</h3>
                 <div class="chart-wrapper"><canvas id="targetChart"></canvas></div>
             </div>
             <div class="chart-container">
-                <h3>${currentLanguage === 'english' ? 'Career Growth Perception' : 'करियर विकास धारणा'}</h3>
+                <h3>Career Growth Perception</h3>
                 <div class="chart-wrapper"><canvas id="careerGrowthChart"></canvas></div>
             </div>
             <div class="chart-container">
-                <h3>${currentLanguage === 'english' ? 'Training Requirements' : 'प्रशिक्षण आवश्यकताएं'}</h3>
+                <h3>Training Requirements</h3>
                 <div class="chart-wrapper"><canvas id="trainingChart"></canvas></div>
             </div>
         </div>
 
         <!-- NPS & Overall -->
-        <h3 class="category-title">${currentLanguage === 'english' ? '⭐ Net Promoter Score & Overall Metrics' : '⭐ नेट प्रमोटर स्कोर और समग्र मेट्रिक्स'}</h3>
+        <h3 class="category-title">⭐ Net Promoter Score & Overall Metrics</h3>
         <div class="chart-grid">
             <div class="chart-container full-width-chart">
-                <h3>${currentLanguage === 'english' ? 'Recommendation Score Distribution (NPS)' : 'सिफारिश स्कोर वितरण (एनपीएस)'}</h3>
+                <h3>Recommendation Score Distribution (NPS)</h3>
                 <div class="chart-wrapper"><canvas id="recommendationChart"></canvas></div>
             </div>
             <div class="chart-container full-width-chart">
-                <h3>${currentLanguage === 'english' ? 'Overall Satisfaction Radar' : 'समग्र संतुष्टि रडार'}</h3>
+                <h3>Overall Satisfaction Radar</h3>
                 <div class="chart-wrapper"><canvas id="overallRadarChart"></canvas></div>
             </div>
             <div class="chart-container full-width-chart">
-                <h3>${currentLanguage === 'english' ? 'Comparative Analysis - All Metrics' : 'तुलनात्मक विश्लेषण - सभी मेट्रिक्स'}</h3>
+                <h3>Comparative Analysis - All Metrics</h3>
                 <div class="chart-wrapper"><canvas id="comparativeChart"></canvas></div>
             </div>
         </div>
@@ -410,7 +318,7 @@ function renderAllCharts() {
 }
 
 function renderDetailedTables() {
-    const questions = questionMappings[currentLanguage];
+    // Using global questions object;
 
     return `
         <div class="section-header">
@@ -419,7 +327,7 @@ function renderDetailedTables() {
                 <line x1="3" y1="9" x2="21" y2="9"></line>
                 <line x1="9" y1="21" x2="9" y2="9"></line>
             </svg>
-            <h2>${currentLanguage === 'english' ? 'Detailed Data Tables' : 'विस्तृत डेटा तालिकाएं'}</h2>
+            <h2>Detailed Data Tables</h2>
         </div>
 
         ${renderResponseSummaryTable()}
@@ -429,36 +337,36 @@ function renderDetailedTables() {
 }
 
 function renderResponseSummaryTable() {
-    const questions = questionMappings[currentLanguage];
+    // Using global questions object;
 
     const summaryData = [
-        { question: currentLanguage === 'english' ? 'Tablet Working' : 'टैबलेट काम कर रहा', key: questions.tablet_working },
-        { question: currentLanguage === 'english' ? 'Internet Problems' : 'इंटरनेट समस्याएं', key: questions.internet_problems },
-        { question: currentLanguage === 'english' ? 'Clinic Clean' : 'क्लिनिक साफ', key: questions.clinic_clean },
-        { question: currentLanguage === 'english' ? 'Feel Safe' : 'सुरक्षित महसूस', key: questions.feel_safe },
-        { question: currentLanguage === 'english' ? 'Medicines Available' : 'दवाइयां उपलब्ध', key: questions.medicines_available },
-        { question: currentLanguage === 'english' ? 'Managers Helpful' : 'प्रबंधक सहायक', key: questions.managers_helpful },
-        { question: currentLanguage === 'english' ? 'Monthly Target' : 'मासिक लक्ष्य', key: questions.monthly_target },
-        { question: currentLanguage === 'english' ? 'Patient Behavior' : 'रोगी व्यवहार', key: questions.patient_behavior },
-        { question: currentLanguage === 'english' ? 'Patient Trust' : 'रोगी विश्वास', key: questions.patient_trust },
-        { question: currentLanguage === 'english' ? 'Proud of Work' : 'काम पर गर्व', key: questions.proud_of_work },
-        { question: currentLanguage === 'english' ? 'Career Growth' : 'करियर विकास', key: questions.career_growth }
+        { question: 'Tablet Working', key: questions.tablet_working },
+        { question: 'Internet Problems', key: questions.internet_problems },
+        { question: 'Clinic Clean', key: questions.clinic_clean },
+        { question: 'Feel Safe', key: questions.feel_safe },
+        { question: 'Medicines Available', key: questions.medicines_available },
+        { question: 'Managers Helpful', key: questions.managers_helpful },
+        { question: 'Monthly Target', key: questions.monthly_target },
+        { question: 'Patient Behavior', key: questions.patient_behavior },
+        { question: 'Patient Trust', key: questions.patient_trust },
+        { question: 'Proud of Work', key: questions.proud_of_work },
+        { question: 'Career Growth', key: questions.career_growth }
     ];
 
     let tableRows = '';
     summaryData.forEach(item => {
         if (item.key) {
             const counts = getResponseCounts(item.key,
-                currentLanguage === 'english' ? ['Yes', 'No', 'Sometimes'] : ['हाँ', 'नहीं', 'कभी-कभी']);
+                ['Yes', 'No', 'Sometimes']);
             const total = Object.values(counts).reduce((a, b) => a + b, 0);
-            const yesPercent = total > 0 ? ((counts[currentLanguage === 'english' ? 'Yes' : 'हाँ'] / total) * 100).toFixed(1) : 0;
+            const yesPercent = total > 0 ? ((counts'Yes' / total) * 100).toFixed(1) : 0;
 
             tableRows += `
                 <tr>
                     <td><strong>${item.question}</strong></td>
-                    <td>${counts[currentLanguage === 'english' ? 'Yes' : 'हाँ'] || 0}</td>
-                    <td>${counts[currentLanguage === 'english' ? 'No' : 'नहीं'] || 0}</td>
-                    <td>${counts[currentLanguage === 'english' ? 'Sometimes' : 'कभी-कभी'] || 0}</td>
+                    <td>${counts'Yes' || 0}</td>
+                    <td>${counts'No' || 0}</td>
+                    <td>${counts'Sometimes' || 0}</td>
                     <td><span class="sentiment-${yesPercent > 70 ? 'positive' : yesPercent > 40 ? 'neutral' : 'negative'}">${yesPercent}%</span></td>
                 </tr>
             `;
@@ -467,15 +375,15 @@ function renderResponseSummaryTable() {
 
     return `
         <div class="table-section">
-            <h3>${currentLanguage === 'english' ? 'Response Summary by Question' : 'प्रश्न द्वारा प्रतिक्रिया सारांश'}</h3>
+            <h3>Response Summary by Question</h3>
             <table class="data-table">
                 <thead>
                     <tr>
-                        <th>${currentLanguage === 'english' ? 'Question' : 'प्रश्न'}</th>
-                        <th>${currentLanguage === 'english' ? 'Yes' : 'हाँ'}</th>
-                        <th>${currentLanguage === 'english' ? 'No' : 'नहीं'}</th>
-                        <th>${currentLanguage === 'english' ? 'Sometimes' : 'कभी-कभी'}</th>
-                        <th>${currentLanguage === 'english' ? 'Positive %' : 'सकारात्मक %'}</th>
+                        <th>Question</th>
+                        <th>Yes</th>
+                        <th>No</th>
+                        <th>Sometimes</th>
+                        <th>Positive %</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -487,7 +395,7 @@ function renderResponseSummaryTable() {
 }
 
 function renderTopFeedbackTable() {
-    const questions = questionMappings[currentLanguage];
+    // Using global questions object;
 
     const feedbackData = currentData
         .filter(row => {
@@ -512,13 +420,13 @@ function renderTopFeedbackTable() {
 
     return `
         <div class="table-section">
-            <h3>${currentLanguage === 'english' ? 'Management Feedback Highlights' : 'प्रबंधन फीडबैक हाइलाइट्स'}</h3>
+            <h3>Management Feedback Highlights</h3>
             <table class="data-table">
                 <thead>
                     <tr>
-                        <th>${currentLanguage === 'english' ? 'Employee' : 'कर्मचारी'}</th>
-                        <th>${currentLanguage === 'english' ? 'Feedback' : 'फीडबैक'}</th>
-                        <th>${currentLanguage === 'english' ? 'NPS' : 'एनपीएस'}</th>
+                        <th>Employee</th>
+                        <th>Feedback</th>
+                        <th>NPS</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -530,7 +438,7 @@ function renderTopFeedbackTable() {
 }
 
 function renderNPSBreakdownTable() {
-    const questions = questionMappings[currentLanguage];
+    // Using global questions object;
 
     const npsData = {
         promoters: 0,
@@ -553,37 +461,37 @@ function renderNPSBreakdownTable() {
 
     return `
         <div class="table-section">
-            <h3>${currentLanguage === 'english' ? 'Net Promoter Score (NPS) Breakdown' : 'नेट प्रमोटर स्कोर (एनपीएस) विवरण'}</h3>
+            <h3>Net Promoter Score (NPS) Breakdown</h3>
             <table class="data-table">
                 <thead>
                     <tr>
-                        <th>${currentLanguage === 'english' ? 'Category' : 'श्रेणी'}</th>
-                        <th>${currentLanguage === 'english' ? 'Score Range' : 'स्कोर रेंज'}</th>
-                        <th>${currentLanguage === 'english' ? 'Count' : 'गिनती'}</th>
-                        <th>${currentLanguage === 'english' ? 'Percentage' : 'प्रतिशत'}</th>
+                        <th>Category</th>
+                        <th>Score Range</th>
+                        <th>Count</th>
+                        <th>Percentage</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td><span class="sentiment-positive">${currentLanguage === 'english' ? 'Promoters' : 'प्रमोटर्स'}</span></td>
+                        <td><span class="sentiment-positive">Promoters</span></td>
                         <td>9-10</td>
                         <td>${npsData.promoters}</td>
                         <td>${total > 0 ? ((npsData.promoters / total) * 100).toFixed(1) : 0}%</td>
                     </tr>
                     <tr>
-                        <td><span class="sentiment-neutral">${currentLanguage === 'english' ? 'Passives' : 'पैसिव'}</span></td>
+                        <td><span class="sentiment-neutral">Passives</span></td>
                         <td>7-8</td>
                         <td>${npsData.passives}</td>
                         <td>${total > 0 ? ((npsData.passives / total) * 100).toFixed(1) : 0}%</td>
                     </tr>
                     <tr>
-                        <td><span class="sentiment-negative">${currentLanguage === 'english' ? 'Detractors' : 'डिट्रैक्टर्स'}</span></td>
+                        <td><span class="sentiment-negative">Detractors</span></td>
                         <td>1-6</td>
                         <td>${npsData.detractors}</td>
                         <td>${total > 0 ? ((npsData.detractors / total) * 100).toFixed(1) : 0}%</td>
                     </tr>
                     <tr style="background: #f0f9ff; font-weight: bold;">
-                        <td colspan="3">${currentLanguage === 'english' ? 'Net Promoter Score' : 'नेट प्रमोटर स्कोर'}</td>
+                        <td colspan="3">Net Promoter Score</td>
                         <td><span class="sentiment-${npsScore > 50 ? 'positive' : npsScore > 0 ? 'neutral' : 'negative'}">${npsScore}</span></td>
                     </tr>
                 </tbody>
@@ -593,7 +501,7 @@ function renderNPSBreakdownTable() {
 }
 
 function renderTextAnalysis() {
-    const questions = questionMappings[currentLanguage];
+    // Using global questions object;
 
     const improvements = currentData
         .filter(row => {
@@ -623,18 +531,18 @@ function renderTextAnalysis() {
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
             </svg>
-            <h2>${currentLanguage === 'english' ? 'Qualitative Feedback Analysis' : 'गुणात्मक फीडबैक विश्लेषण'}</h2>
+            <h2>Qualitative Feedback Analysis</h2>
         </div>
 
         <div class="insights-grid">
             <div class="insight-card">
-                <h4>${currentLanguage === 'english' ? 'Clinic Improvement Suggestions' : 'क्लिनिक सुधार सुझाव'}</h4>
+                <h4>Clinic Improvement Suggestions</h4>
                 <ul style="margin-top: 10px; color: #4b5563;">
                     ${improvements.map(row => `<li>${row[questions.clinic_improvements]}</li>`).join('')}
                 </ul>
             </div>
             <div class="insight-card">
-                <h4>${currentLanguage === 'english' ? 'Additional Help Requested' : 'अतिरिक्त सहायता का अनुरोध'}</h4>
+                <h4>Additional Help Requested</h4>
                 <ul style="margin-top: 10px; color: #4b5563;">
                     ${additionalHelp.map(row => `<li>${row[questions.additional_help]}</li>`).join('')}
                 </ul>
@@ -644,7 +552,7 @@ function renderTextAnalysis() {
 }
 
 function renderInsights() {
-    const questions = questionMappings[currentLanguage];
+    // Using global questions object;
 
     const internetIssues = countResponses(questions.internet_problems, ['sometimes', 'yes', 'कभी-कभी', 'हाँ']);
     const needsTraining = countResponses(questions.additional_training, ['yes', 'maybe later', 'हाँ', 'शायद बाद में']);
@@ -658,60 +566,48 @@ function renderInsights() {
     if (internetIssues > currentData.length * 0.3) {
         insights.push({
             type: 'warning',
-            title: currentLanguage === 'english' ? '⚠️ Internet Connectivity Concerns' : '⚠️ इंटरनेट कनेक्टिविटी चिंताएं',
-            text: currentLanguage === 'english'
-                ? `${((internetIssues / currentData.length) * 100).toFixed(0)}% of nurses report internet issues during consultations. This requires immediate attention.`
-                : `${((internetIssues / currentData.length) * 100).toFixed(0)}% नर्सें परामर्श के दौरान इंटरनेट समस्याओं की रिपोर्ट करती हैं। इस पर तुरंत ध्यान देने की आवश्यकता है।`
+            title: '⚠️ Internet Connectivity Concerns',
+            text: 'Combined English and Hindi responses analyzed.'}% नर्सें परामर्श के दौरान इंटरनेट समस्याओं की रिपोर्ट करती हैं। इस पर तुरंत ध्यान देने की आवश्यकता है।`
         });
     }
 
     if (needsTraining > 0) {
         insights.push({
             type: 'warning',
-            title: currentLanguage === 'english' ? '📚 Training Gap Identified' : '📚 प्रशिक्षण अंतर की पहचान',
-            text: currentLanguage === 'english'
-                ? `${needsTraining} nurses (${((needsTraining / currentData.length) * 100).toFixed(0)}%) have requested additional training.`
-                : `${needsTraining} नर्सों (${((needsTraining / currentData.length) * 100).toFixed(0)}%) ने अतिरिक्त प्रशिक्षण का अनुरोध किया है।`
+            title: '📚 Training Gap Identified',
+            text: 'Combined English and Hindi responses analyzed.'} नर्सों (${((needsTraining / currentData.length) * 100).toFixed(0)}%) ने अतिरिक्त प्रशिक्षण का अनुरोध किया है।`
         });
     }
 
     if (targetCompleted > currentData.length * 0.7) {
         insights.push({
             type: 'success',
-            title: currentLanguage === 'english' ? '✅ Excellent Performance' : '✅ उत्कृष्ट प्रदर्शन',
-            text: currentLanguage === 'english'
-                ? `${((targetCompleted / currentData.length) * 100).toFixed(0)}% of nurses are successfully meeting their monthly targets.`
-                : `${((targetCompleted / currentData.length) * 100).toFixed(0)}% नर्सें अपने मासिक लक्ष्यों को सफलतापूर्वक पूरा कर रही हैं।`
+            title: '✅ Excellent Performance',
+            text: 'Combined English and Hindi responses analyzed.'}% नर्सें अपने मासिक लक्ष्यों को सफलतापूर्वक पूरा कर रही हैं।`
         });
     }
 
     if (feelSafe > currentData.length * 0.8) {
         insights.push({
             type: 'success',
-            title: currentLanguage === 'english' ? '🛡️ Strong Safety Perception' : '🛡️ मजबूत सुरक्षा धारणा',
-            text: currentLanguage === 'english'
-                ? `${((feelSafe / currentData.length) * 100).toFixed(0)}% of nurses feel safe working alone in the clinic.`
-                : `${((feelSafe / currentData.length) * 100).toFixed(0)}% नर्सें क्लिनिक में अकेले काम करते हुए सुरक्षित महसूस करती हैं।`
+            title: '🛡️ Strong Safety Perception',
+            text: 'Combined English and Hindi responses analyzed.'}% नर्सें क्लिनिक में अकेले काम करते हुए सुरक्षित महसूस करती हैं।`
         });
     }
 
     if (medicinesAvailable < currentData.length * 0.7) {
         insights.push({
             type: 'warning',
-            title: currentLanguage === 'english' ? '💊 Medicine Availability Issue' : '💊 दवा उपलब्धता समस्या',
-            text: currentLanguage === 'english'
-                ? `Only ${((medicinesAvailable / currentData.length) * 100).toFixed(0)}% report having all necessary medicines available.`
-                : `केवल ${((medicinesAvailable / currentData.length) * 100).toFixed(0)}% रिपोर्ट करती हैं कि सभी आवश्यक दवाइयां उपलब्ध हैं।`
+            title: '💊 Medicine Availability Issue',
+            text: 'Combined English and Hindi responses analyzed.'}% रिपोर्ट करती हैं कि सभी आवश्यक दवाइयां उपलब्ध हैं।`
         });
     }
 
     if (careerGrowth > currentData.length * 0.6) {
         insights.push({
             type: 'success',
-            title: currentLanguage === 'english' ? '📈 Positive Career Outlook' : '📈 सकारात्मक करियर दृष्टिकोण',
-            text: currentLanguage === 'english'
-                ? `${((careerGrowth / currentData.length) * 100).toFixed(0)}% believe they can grow their career at M-Swasth.`
-                : `${((careerGrowth / currentData.length) * 100).toFixed(0)}% का मानना है कि वे एम-स्वस्थ में अपना करियर बढ़ा सकती हैं।`
+            title: '📈 Positive Career Outlook',
+            text: 'Combined English and Hindi responses analyzed.'}% का मानना है कि वे एम-स्वस्थ में अपना करियर बढ़ा सकती हैं।`
         });
     }
 
@@ -722,7 +618,7 @@ function renderInsights() {
                 <line x1="12" y1="16" x2="12" y2="12"></line>
                 <line x1="12" y1="8" x2="12.01" y2="8"></line>
             </svg>
-            <h2>${currentLanguage === 'english' ? 'Key Insights & Recommendations' : 'मुख्य अंतर्दृष्टि और सिफारिशें'}</h2>
+            <h2>Key Insights & Recommendations</h2>
         </div>
         <div class="insights-grid">
             ${insights.map(insight => `
@@ -772,8 +668,8 @@ function getResponseCounts(question, possibleAnswers) {
 }
 
 function initializeAllCharts() {
-    const questions = questionMappings[currentLanguage];
-    const yesNoSometimes = currentLanguage === 'english' ? ['Yes', 'No', 'Sometimes'] : ['हाँ', 'नहीं', 'कभी-कभी'];
+    // Using global questions object;
+    const yesNoSometimes = ['Yes', 'No', 'Sometimes'];
 
     // Chart colors
     const colors = {
@@ -814,7 +710,7 @@ function initializeAllCharts() {
     createBarChart('targetChart', getResponseCounts(questions.monthly_target, yesNoSometimes));
     createPieChart('careerGrowthChart', getResponseCounts(questions.career_growth, yesNoSometimes));
     createBarChart('trainingChart', getResponseCounts(questions.additional_training,
-        currentLanguage === 'english' ? ['Yes', 'No', 'Maybe later'] : ['हाँ', 'नहीं', 'शायद बाद में']));
+        ['Yes', 'No', 'Maybe later']));
 
     // NPS Distribution
     const recommendScores = {};
@@ -831,7 +727,7 @@ function initializeAllCharts() {
         data: {
             labels: Object.keys(recommendScores),
             datasets: [{
-                label: currentLanguage === 'english' ? 'Number of Responses' : 'प्रतिक्रियाओं की संख्या',
+                label: 'Number of Responses',
                 data: Object.values(recommendScores),
                 backgroundColor: '#667eea',
                 borderRadius: 8
@@ -843,21 +739,21 @@ function initializeAllCharts() {
             plugins: { legend: { display: true, position: 'top' } },
             scales: {
                 y: { beginAtZero: true, ticks: { stepSize: 1 } },
-                x: { title: { display: true, text: currentLanguage === 'english' ? 'Rating (1-10)' : 'रेटिंग (1-10)' } }
+                x: { title: { display: true, text: 'Combined English and Hindi responses analyzed.'} }
             }
         }
     });
 
     // Overall Radar
     const radarMetrics = {
-        [currentLanguage === 'english' ? 'Tablet' : 'टैबलेट']: countYesResponses(questions.tablet_working),
-        [currentLanguage === 'english' ? 'Clean' : 'साफ']: countYesResponses(questions.clinic_clean),
-        [currentLanguage === 'english' ? 'Safe' : 'सुरक्षित']: countYesResponses(questions.feel_safe),
-        [currentLanguage === 'english' ? 'Medicines' : 'दवाइयां']: countYesResponses(questions.medicines_available),
-        [currentLanguage === 'english' ? 'Managers' : 'प्रबंधक']: countYesResponses(questions.managers_helpful),
-        [currentLanguage === 'english' ? 'Proud' : 'गर्व']: countYesResponses(questions.proud_of_work),
-        [currentLanguage === 'english' ? 'Patients' : 'रोगी']: countYesResponses(questions.patient_trust),
-        [currentLanguage === 'english' ? 'Career' : 'करियर']: countYesResponses(questions.career_growth)
+        'Tablet': countYesResponses(questions.tablet_working),
+        'Clean': countYesResponses(questions.clinic_clean),
+        'Safe': countYesResponses(questions.feel_safe),
+        'Medicines': countYesResponses(questions.medicines_available),
+        'Managers': countYesResponses(questions.managers_helpful),
+        'Proud': countYesResponses(questions.proud_of_work),
+        'Patients': countYesResponses(questions.patient_trust),
+        'Career': countYesResponses(questions.career_growth)
     };
 
     createChart('overallRadarChart', {
@@ -865,7 +761,7 @@ function initializeAllCharts() {
         data: {
             labels: Object.keys(radarMetrics),
             datasets: [{
-                label: currentLanguage === 'english' ? 'Positive Responses (%)' : 'सकारात्मक प्रतिक्रियाएं (%)',
+                label: 'Positive Responses (%)',
                 data: Object.values(radarMetrics).map(count => (count / currentData.length * 100).toFixed(1)),
                 backgroundColor: 'rgba(102, 126, 234, 0.2)',
                 borderColor: '#667eea',
@@ -912,7 +808,7 @@ function initializeAllCharts() {
         data: {
             labels: currentLanguage === 'english' ? allMetrics : allMetricsHindi,
             datasets: [{
-                label: currentLanguage === 'english' ? 'Positive Response Rate (%)' : 'सकारात्मक प्रतिक्रिया दर (%)',
+                label: 'Positive Response Rate (%)',
                 data: comparativeData,
                 backgroundColor: '#2563eb',
                 borderRadius: 8
@@ -1035,7 +931,7 @@ function createBarChart(canvasId, data) {
         data: {
             labels: Object.keys(data),
             datasets: [{
-                label: currentLanguage === 'english' ? 'Responses' : 'प्रतिक्रियाएं',
+                label: 'Responses',
                 data: Object.values(data),
                 backgroundColor: ['#10b981', '#ef4444', '#f59e0b'],
                 borderRadius: 8
@@ -1091,7 +987,7 @@ async function exportAsImage() {
     const dashboardContent = document.getElementById('dashboardContent');
 
     if (!currentData) {
-        alert(currentLanguage === 'english' ? 'Please upload data first!' : 'कृपया पहले डेटा अपलोड करें!');
+        alert('Please upload data first!');
         return;
     }
 
@@ -1114,7 +1010,7 @@ async function exportAsImage() {
 
 function exportAsCSV() {
     if (!currentData) {
-        alert(currentLanguage === 'english' ? 'Please upload data first!' : 'कृपया पहले डेटा अपलोड करें!');
+        alert('Please upload data first!');
         return;
     }
 
