@@ -842,6 +842,14 @@ function createPieChart(canvasId, data) {
         options: {
             responsive: true,
             maintainAspectRatio: false,
+            layout: {
+                padding: {
+                    top: 20,
+                    right: 20,
+                    bottom: 20,
+                    left: 20
+                }
+            },
             plugins: {
                 legend: { position: 'bottom' },
                 datalabels: {
@@ -887,6 +895,14 @@ function createDoughnutChart(canvasId, data) {
         options: {
             responsive: true,
             maintainAspectRatio: false,
+            layout: {
+                padding: {
+                    top: 20,
+                    right: 20,
+                    bottom: 20,
+                    left: 20
+                }
+            },
             plugins: {
                 legend: { position: 'bottom' },
                 datalabels: {
@@ -932,6 +948,14 @@ function createBarChart(canvasId, data) {
         options: {
             responsive: true,
             maintainAspectRatio: false,
+            layout: {
+                padding: {
+                    top: 30,
+                    right: 20,
+                    bottom: 20,
+                    left: 20
+                }
+            },
             plugins: {
                 legend: { display: false },
                 datalabels: {

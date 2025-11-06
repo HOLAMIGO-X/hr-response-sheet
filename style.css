@@ -279,6 +279,7 @@ header h1 {
 .chart-wrapper {
     position: relative;
     height: 300px;
+    padding: 20px;
 }
 
 .full-width-chart {
