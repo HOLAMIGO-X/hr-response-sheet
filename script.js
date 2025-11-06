@@ -186,6 +186,33 @@ function detectLanguage(data) {
         const hasHindi = columns.some(col => /[\u0900-\u097F]/.test(col));
         currentLanguage = hasHindi ? 'hindi' : 'english';
 
+        // Debug: Log detected columns
+        console.log('Detected Language:', currentLanguage);
+        console.log('Available Columns:', columns);
+
+        // Verify key mappings exist
+        const questions = questionMappings[currentLanguage];
+        const missingMappings = [];
+        Object.keys(questions).forEach(key => {
+            const columnName = questions[key];
+            if (columnName && !columns.includes(columnName)) {
+                // Try to find similar column
+                const similar = columns.find(col =>
+                    col.toLowerCase().includes(columnName.toLowerCase().substring(0, 20)) ||
+                    columnName.toLowerCase().includes(col.toLowerCase().substring(0, 20))
+                );
+                if (similar) {
+                    console.log(`Mapping mismatch for ${key}: Expected "${columnName}", found similar "${similar}"`);
+                } else {
+                    missingMappings.push({key, expected: columnName});
+                }
+            }
+        });
+
+        if (missingMappings.length > 0) {
+            console.warn('Missing column mappings:', missingMappings);
+        }
+
         document.querySelectorAll('.lang-btn').forEach(btn => {
             btn.classList.remove('active');
             if (btn.dataset.lang === currentLanguage) {
