@@ -932,6 +932,11 @@ function createPieChart(canvasId, data) {
     const total = Object.values(data).reduce((a, b) => a + b, 0);
     if (total === 0) {
         console.warn(`Skipping chart ${canvasId} - no data`);
+        // Hide the chart container
+        const chartElement = document.getElementById(canvasId);
+        if (chartElement && chartElement.parentElement) {
+            chartElement.parentElement.style.display = 'none';
+        }
         return;
     }
 
@@ -949,8 +954,21 @@ function createPieChart(canvasId, data) {
         options: {
             responsive: true,
             maintainAspectRatio: false,
-            plugins: { legend: { position: 'bottom' } }
-        }
+            plugins: {
+                legend: { position: 'bottom' },
+                datalabels: {
+                    color: '#fff',
+                    font: {
+                        weight: 'bold',
+                        size: 14
+                    },
+                    formatter: (value, context) => {
+                        return value;
+                    }
+                }
+            }
+        },
+        plugins: [ChartDataLabels]
     });
 }
 
@@ -959,6 +977,11 @@ function createDoughnutChart(canvasId, data) {
     const total = Object.values(data).reduce((a, b) => a + b, 0);
     if (total === 0) {
         console.warn(`Skipping chart ${canvasId} - no data`);
+        // Hide the chart container
+        const chartElement = document.getElementById(canvasId);
+        if (chartElement && chartElement.parentElement) {
+            chartElement.parentElement.style.display = 'none';
+        }
         return;
     }
 
@@ -976,8 +999,21 @@ function createDoughnutChart(canvasId, data) {
         options: {
             responsive: true,
             maintainAspectRatio: false,
-            plugins: { legend: { position: 'bottom' } }
-        }
+            plugins: {
+                legend: { position: 'bottom' },
+                datalabels: {
+                    color: '#fff',
+                    font: {
+                        weight: 'bold',
+                        size: 14
+                    },
+                    formatter: (value, context) => {
+                        return value;
+                    }
+                }
+            }
+        },
+        plugins: [ChartDataLabels]
     });
 }
 
@@ -986,6 +1022,11 @@ function createBarChart(canvasId, data) {
     const total = Object.values(data).reduce((a, b) => a + b, 0);
     if (total === 0) {
         console.warn(`Skipping chart ${canvasId} - no data`);
+        // Hide the chart container
+        const chartElement = document.getElementById(canvasId);
+        if (chartElement && chartElement.parentElement) {
+            chartElement.parentElement.style.display = 'none';
+        }
         return;
     }
 
@@ -1003,9 +1044,24 @@ function createBarChart(canvasId, data) {
         options: {
             responsive: true,
             maintainAspectRatio: false,
-            plugins: { legend: { display: false } },
+            plugins: {
+                legend: { display: false },
+                datalabels: {
+                    anchor: 'end',
+                    align: 'top',
+                    color: '#1f2937',
+                    font: {
+                        weight: 'bold',
+                        size: 12
+                    },
+                    formatter: (value, context) => {
+                        return value;
+                    }
+                }
+            },
             scales: { y: { beginAtZero: true } }
-        }
+        },
+        plugins: [ChartDataLabels]
     });
 }
 
