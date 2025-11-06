@@ -779,11 +779,6 @@ function initializeAllCharts() {
         'Managers', 'Targets', 'Patients', 'Trust', 'Proud',
         'Career', 'Equipment'
     ];
-    const allMetricsHindi = [
-        'टैबलेट', 'इंटरनेट', 'साफ', 'सुरक्षित', 'दवाइयां',
-        'प्रबंधक', 'लक्ष्य', 'रोगी', 'विश्वास', 'गर्व',
-        'करियर', 'उपकरण'
-    ];
 
     const comparativeData = [
         countYesResponses(questions.tablet_working),
@@ -803,7 +798,7 @@ function initializeAllCharts() {
     createChart('comparativeChart', {
         type: 'bar',
         data: {
-            labels: currentLanguage === 'english' ? allMetrics : allMetricsHindi,
+            labels: allMetrics,
             datasets: [{
                 label: 'Positive Response Rate (%)',
                 data: comparativeData,
