@@ -38,8 +38,6 @@ const questions = {
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
-    initializeExportButtons();
-
     // Load combined embedded data
     if (typeof embeddedData !== 'undefined') {
         console.log('Loading combined data...');
@@ -71,8 +69,6 @@ function renderDashboard() {
         ${renderStats()}
         ${renderAllCharts()}
         ${renderDetailedTables()}
-        ${renderInsights()}
-        ${renderTextAnalysis()}
     `;
 
     dashboardContent.innerHTML = html;
@@ -153,11 +149,6 @@ function renderStats() {
                 <div class="value">${satisfactionRate}%</div>
                 <div class="label">Positive Responses</div>
             </div>
-            <div class="stat-card" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
-                <h3>Target Achievement</h3>
-                <div class="value">${targetPercentage}%</div>
-                <div class="label">Meeting Monthly Targets</div>
-            </div>
             <div class="stat-card" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">
                 <h3>Training Needs</h3>
                 <div class="value">${trainingPercentage}%</div>
@@ -233,10 +224,6 @@ function renderAllCharts() {
                 <h3>Clinic Timing Satisfaction</h3>
                 <div class="chart-wrapper"><canvas id="timingChart"></canvas></div>
             </div>
-            <div class="chart-container">
-                <h3>Diagnostic Camp Support</h3>
-                <div class="chart-wrapper"><canvas id="campHelpChart"></canvas></div>
-            </div>
         </div>
 
         <!-- Doctor & Team Interaction -->
@@ -245,14 +232,6 @@ function renderAllCharts() {
             <div class="chart-container">
                 <h3>Doctor Behavior & Respect</h3>
                 <div class="chart-wrapper"><canvas id="doctorRespectChart"></canvas></div>
-            </div>
-            <div class="chart-container">
-                <h3>Advice Communication Clarity</h3>
-                <div class="chart-wrapper"><canvas id="explainAdviceChart"></canvas></div>
-            </div>
-            <div class="chart-container">
-                <h3>Partner Staff Collaboration</h3>
-                <div class="chart-wrapper"><canvas id="partnerProblemsChart"></canvas></div>
             </div>
             <div class="chart-container">
                 <h3>Manager Helpfulness</h3>
@@ -285,16 +264,8 @@ function renderAllCharts() {
                 <div class="chart-wrapper"><canvas id="proudChart"></canvas></div>
             </div>
             <div class="chart-container">
-                <h3>Monthly Target Achievement</h3>
-                <div class="chart-wrapper"><canvas id="targetChart"></canvas></div>
-            </div>
-            <div class="chart-container">
                 <h3>Career Growth Perception</h3>
                 <div class="chart-wrapper"><canvas id="careerGrowthChart"></canvas></div>
-            </div>
-            <div class="chart-container">
-                <h3>Training Requirements</h3>
-                <div class="chart-wrapper"><canvas id="trainingChart"></canvas></div>
             </div>
         </div>
 
@@ -308,10 +279,6 @@ function renderAllCharts() {
             <div class="chart-container full-width-chart">
                 <h3>Overall Satisfaction Radar</h3>
                 <div class="chart-wrapper"><canvas id="overallRadarChart"></canvas></div>
-            </div>
-            <div class="chart-container full-width-chart">
-                <h3>Comparative Analysis - All Metrics</h3>
-                <div class="chart-wrapper"><canvas id="comparativeChart"></canvas></div>
             </div>
         </div>
     `;
@@ -332,7 +299,6 @@ function renderDetailedTables() {
 
         ${renderResponseSummaryTable()}
         ${renderTopFeedbackTable()}
-        ${renderNPSBreakdownTable()}
     `;
 }
 
@@ -359,14 +325,14 @@ function renderResponseSummaryTable() {
             const counts = getResponseCounts(item.key,
                 ['Yes', 'No', 'Sometimes']);
             const total = Object.values(counts).reduce((a, b) => a + b, 0);
-            const yesPercent = total > 0 ? ((counts'Yes' / total) * 100).toFixed(1) : 0;
+            const yesPercent = total > 0 ? ((counts['Yes'] / total) * 100).toFixed(1) : 0;
 
             tableRows += `
                 <tr>
                     <td><strong>${item.question}</strong></td>
-                    <td>${counts'Yes' || 0}</td>
-                    <td>${counts'No' || 0}</td>
-                    <td>${counts'Sometimes' || 0}</td>
+                    <td>${counts['Yes'] || 0}</td>
+                    <td>${counts['No'] || 0}</td>
+                    <td>${counts['Sometimes'] || 0}</td>
                     <td><span class="sentiment-${yesPercent > 70 ? 'positive' : yesPercent > 40 ? 'neutral' : 'negative'}">${yesPercent}%</span></td>
                 </tr>
             `;
@@ -567,7 +533,7 @@ function renderInsights() {
         insights.push({
             type: 'warning',
             title: '⚠️ Internet Connectivity Concerns',
-            text: 'Combined English and Hindi responses analyzed.'}% नर्सें परामर्श के दौरान इंटरनेट समस्याओं की रिपोर्ट करती हैं। इस पर तुरंत ध्यान देने की आवश्यकता है।`
+            text: `${((internetIssues / currentData.length) * 100).toFixed(0)}% of nurses report internet connectivity issues during consultations. Immediate attention needed.`
         });
     }
 
@@ -575,7 +541,7 @@ function renderInsights() {
         insights.push({
             type: 'warning',
             title: '📚 Training Gap Identified',
-            text: 'Combined English and Hindi responses analyzed.'} नर्सों (${((needsTraining / currentData.length) * 100).toFixed(0)}%) ने अतिरिक्त प्रशिक्षण का अनुरोध किया है।`
+            text: `${needsTraining} nurses (${((needsTraining / currentData.length) * 100).toFixed(0)}%) have requested additional training. Consider organizing skill development programs.`
         });
     }
 
@@ -583,7 +549,7 @@ function renderInsights() {
         insights.push({
             type: 'success',
             title: '✅ Excellent Performance',
-            text: 'Combined English and Hindi responses analyzed.'}% नर्सें अपने मासिक लक्ष्यों को सफलतापूर्वक पूरा कर रही हैं।`
+            text: `${((targetCompleted / currentData.length) * 100).toFixed(0)}% of nurses are successfully meeting their monthly targets. Great performance!`
         });
     }
 
@@ -591,7 +557,7 @@ function renderInsights() {
         insights.push({
             type: 'success',
             title: '🛡️ Strong Safety Perception',
-            text: 'Combined English and Hindi responses analyzed.'}% नर्सें क्लिनिक में अकेले काम करते हुए सुरक्षित महसूस करती हैं।`
+            text: `${((feelSafe / currentData.length) * 100).toFixed(0)}% of nurses feel safe working alone in the clinic. Positive work environment.`
         });
     }
 
@@ -599,7 +565,7 @@ function renderInsights() {
         insights.push({
             type: 'warning',
             title: '💊 Medicine Availability Issue',
-            text: 'Combined English and Hindi responses analyzed.'}% रिपोर्ट करती हैं कि सभी आवश्यक दवाइयां उपलब्ध हैं।`
+            text: `Only ${((medicinesAvailable / currentData.length) * 100).toFixed(0)}% report all essential medicines are available. Stock management needs improvement.`
         });
     }
 
@@ -607,7 +573,7 @@ function renderInsights() {
         insights.push({
             type: 'success',
             title: '📈 Positive Career Outlook',
-            text: 'Combined English and Hindi responses analyzed.'}% का मानना है कि वे एम-स्वस्थ में अपना करियर बढ़ा सकती हैं।`
+            text: `${((careerGrowth / currentData.length) * 100).toFixed(0)}% believe they can grow their career at M-Swasth. Strong retention potential.`
         });
     }
 
