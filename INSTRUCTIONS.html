@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Instructions</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            color: #2563eb;
+            margin-bottom: 10px;
+            font-size: 2.5rem;
+        }
+
+        h2 {
+            color: #1e40af;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 10px;
+        }
+
+        h3 {
+            color: #2563eb;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        p {
+            margin-bottom: 15px;
+            color: #4b5563;
+        }
+
+        ul, ol {
+            margin-left: 30px;
+            margin-bottom: 20px;
+        }
+
+        li {
+            margin-bottom: 10px;
+            color: #4b5563;
+        }
+
+        .button {
+            display: inline-block;
+            background: #2563eb;
+            color: white;
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            margin: 20px 10px 20px 0;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .button:hover {
+            background: #1e40af;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .feature-card {
+            background: #f0f9ff;
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 4px solid #2563eb;
+        }
+
+        .feature-card h4 {
+            color: #1e40af;
+            margin-bottom: 10px;
+        }
+
+        .warning {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .success {
+            background: #d1fae5;
+            border-left: 4px solid #10b981;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        code {
+            background: #f1f5f9;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #e11d48;
+        }
+
+        .step {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #667eea;
+        }
+
+        .step-number {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📊 M-Swasth Nurse Feedback Dashboard</h1>
+        <p style="font-size: 1.2rem; color: #64748b;">Quick Start Guide & Instructions</p>
+
+        <a href="index.html" class="button">🚀 Open Dashboard</a>
+
+        <h2>✨ Key Features</h2>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>📁 File Upload</h4>
+                <p>Support for CSV and XLSX files with drag & drop functionality</p>
+            </div>
+            <div class="feature-card">
+                <h4>🌐 Bilingual</h4>
+                <p>Full support for English and Hindi (हिंदी) languages</p>
+            </div>
+            <div class="feature-card">
+                <h4>📊 Rich Charts</h4>
+                <p>Multiple visualization types: bar, pie, doughnut, and radar charts</p>
+            </div>
+            <div class="feature-card">
+                <h4>💾 Export Options</h4>
+                <p>Download as PNG image or CSV file for reports</p>
+            </div>
+            <div class="feature-card">
+                <h4>🔒 Privacy First</h4>
+                <p>100% client-side processing - no data uploaded to servers</p>
+            </div>
+            <div class="feature-card">
+                <h4>📱 Responsive</h4>
+                <p>Works perfectly on desktop, tablet, and mobile devices</p>
+            </div>
+        </div>
+
+        <h2>🚀 How to Use</h2>
+
+        <div class="step">
+            <h3><span class="step-number">1</span>Open the Dashboard</h3>
+            <p>Click the "Open Dashboard" button above or directly open <code>index.html</code> in your web browser.</p>
+            <p><strong>Recommended browsers:</strong> Chrome, Firefox, Edge, or Safari</p>
+        </div>
+
+        <div class="step">
+            <h3><span class="step-number">2</span>Upload Your Data File</h3>
+            <p>You have two options to upload your feedback data:</p>
+            <ul>
+                <li><strong>Click to Browse:</strong> Click on the upload area and select your file</li>
+                <li><strong>Drag & Drop:</strong> Simply drag your CSV or XLSX file onto the upload area</li>
+            </ul>
+            <p><strong>Supported files:</strong></p>
+            <ul>
+                <li><code>.csv</code> - Comma-separated values</li>
+                <li><code>.xlsx</code> - Microsoft Excel workbook</li>
+            </ul>
+        </div>
+
+        <div class="step">
+            <h3><span class="step-number">3</span>View Your Analytics</h3>
+            <p>Once uploaded, the dashboard automatically displays:</p>
+            <ul>
+                <li><strong>Statistics Cards:</strong> Total responses, average scores, satisfaction rates</li>
+                <li><strong>Interactive Charts:</strong> Visual representation of all feedback metrics</li>
+                <li><strong>Key Insights:</strong> Automated analysis highlighting important trends</li>
+            </ul>
+        </div>
+
+        <div class="step">
+            <h3><span class="step-number">4</span>Export Your Results</h3>
+            <p>Share or save your analysis using export options:</p>
+            <ul>
+                <li><strong>Download as Image:</strong> Save the entire dashboard as a high-quality PNG image</li>
+                <li><strong>Download as CSV:</strong> Export the data for further analysis in Excel or other tools</li>
+            </ul>
+        </div>
+
+        <h2>📊 Analytics Included</h2>
+        <ol>
+            <li><strong>Tablet & Internet Issues:</strong> Connectivity and device functionality analysis</li>
+            <li><strong>Workplace Safety & Comfort:</strong> Safety perceptions and clinic conditions</li>
+            <li><strong>Support & Resources:</strong> Medicine availability and manager support</li>
+            <li><strong>Patient Interaction:</strong> Patient behavior and trust levels</li>
+            <li><strong>Recommendation Scores:</strong> Net Promoter Score distribution (1-10)</li>
+            <li><strong>Overall Satisfaction:</strong> Multi-dimensional satisfaction radar chart</li>
+            <li><strong>Key Insights:</strong> Automated insights with warnings and success highlights</li>
+        </ol>
+
+        <h2>🌐 Language Support</h2>
+        <div class="success">
+            <h3>English Version</h3>
+            <p>Upload the file: <code>Feedback Form-Nurses (Responses).xlsx</code></p>
+            <p>The dashboard will automatically detect English column headers and display all content in English.</p>
+        </div>
+
+        <div class="success">
+            <h3>Hindi Version (हिंदी संस्करण)</h3>
+            <p>Upload the file: <code>फीडबैक फॉर्म – नर्स (Responses).xlsx</code></p>
+            <p>The dashboard will automatically detect Hindi column headers and display content in Hindi.</p>
+        </div>
+
+        <h2>⚠️ Important Notes</h2>
+        <div class="warning">
+            <h3>Data Privacy & Security</h3>
+            <ul>
+                <li>All data processing happens <strong>entirely in your browser</strong></li>
+                <li>No files are uploaded to any server</li>
+                <li>No data is stored permanently - it exists only during your session</li>
+                <li>You can safely analyze sensitive employee feedback data</li>
+            </ul>
+        </div>
+
+        <div class="warning">
+            <h3>File Requirements</h3>
+            <ul>
+                <li>First row must contain column headers (question text)</li>
+                <li>Subsequent rows contain response data</li>
+                <li>Responses should use consistent format (Yes/No/Sometimes or हाँ/नहीं/कभी-कभी)</li>
+                <li>Recommendation ratings should be numbers between 1-10</li>
+            </ul>
+        </div>
+
+        <h2>🛠️ Technical Details</h2>
+        <p><strong>Technologies Used:</strong></p>
+        <ul>
+            <li>HTML5, CSS3, JavaScript (ES6+)</li>
+            <li>Chart.js - For interactive charts</li>
+            <li>html2canvas - For image export</li>
+            <li>SheetJS (XLSX) - For Excel file parsing</li>
+        </ul>
+
+        <p><strong>Browser Compatibility:</strong></p>
+        <ul>
+            <li>Google Chrome 90+ ✅</li>
+            <li>Mozilla Firefox 88+ ✅</li>
+            <li>Microsoft Edge 90+ ✅</li>
+            <li>Safari 14+ ✅</li>
+        </ul>
+
+        <h2>📁 Files Included</h2>
+        <ul>
+            <li><code>index.html</code> - Main dashboard interface</li>
+            <li><code>style.css</code> - Styling and responsive design</li>
+            <li><code>script.js</code> - Dashboard logic and charts</li>
+            <li><code>README.md</code> - Detailed documentation</li>
+            <li><code>INSTRUCTIONS.html</code> - This guide</li>
+        </ul>
+
+        <h2>❓ Troubleshooting</h2>
+
+        <h3>Dashboard won't load?</h3>
+        <ul>
+            <li>Make sure all files are in the same folder</li>
+            <li>Open <code>index.html</code> in a modern web browser</li>
+            <li>Check that JavaScript is enabled in your browser</li>
+        </ul>
+
+        <h3>Charts not displaying?</h3>
+        <ul>
+            <li>Verify your data file has correct column names</li>
+            <li>Check that you have an active internet connection (for loading Chart.js library)</li>
+            <li>Open browser console (F12) to check for errors</li>
+        </ul>
+
+        <h3>Export not working?</h3>
+        <ul>
+            <li>Ensure data is loaded first before attempting export</li>
+            <li>Check browser pop-up blocker settings</li>
+            <li>Try refreshing the page and uploading again</li>
+        </ul>
+
+        <h2>🎯 Next Steps</h2>
+        <div class="success">
+            <p><strong>Ready to get started?</strong></p>
+            <ol>
+                <li>Click the "Open Dashboard" button at the top</li>
+                <li>Upload your nurse feedback file (CSV or XLSX)</li>
+                <li>Explore the visualizations and insights</li>
+                <li>Export your findings as needed</li>
+            </ol>
+        </div>
+
+        <a href="index.html" class="button">🚀 Open Dashboard Now</a>
+        <a href="README.md" class="button" style="background: #10b981;">📖 Read Full Documentation</a>
+
+        <hr style="margin: 40px 0; border: none; border-top: 2px solid #e2e8f0;">
+
+        <p style="text-align: center; color: #64748b; margin-top: 30px;">
+            <strong>M-Swasth Nurse Feedback Dashboard v1.0</strong><br>
+            Created for comprehensive feedback analysis with privacy and ease-of-use in mind
+        </p>
+    </div>
+</body>
+</html>

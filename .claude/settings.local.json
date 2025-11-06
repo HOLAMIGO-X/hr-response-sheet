@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python read_excel_utf8.py:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
