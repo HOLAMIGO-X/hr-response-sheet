@@ -379,6 +379,18 @@ header h1 {
     color: var(--primary-color);
 }
 
+/* Category Titles */
+.category-title {
+    color: var(--primary-color);
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin: 40px 0 20px;
+    padding: 15px 20px;
+    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+    border-left: 5px solid var(--primary-color);
+    border-radius: 8px;
+}
+
 /* Insights Section */
 .insights-grid {
     display: grid;
