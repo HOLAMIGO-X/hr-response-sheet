@@ -2,6 +2,28 @@
 *.xlsx
 *.xls
 
+# Generated data files (large files, regenerated from source data)
+embedded-data.js
+sample_data.json
+
+# Test/utility Python scripts (not part of core dashboard)
+analyze_mapping.py
+check_columns.py
+compare_columns.py
+read_excel.py
+read_excel_utf8.py
+check_hindi_values.py
+
+# Temporary documentation files
+columns_list.txt
+COMPREHENSIVE_UPDATE.md
+EMBEDDED_DATA_UPDATE.md
+PROJECT_SUMMARY.md
+
+# Test HTML files
+test-hindi.html
+INSTRUCTIONS.html
+
 # Python cache
 __pycache__/
 *.py[cod]
