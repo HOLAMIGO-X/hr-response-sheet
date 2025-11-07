@@ -120,10 +120,6 @@ function renderStats() {
     const needsTraining = countResponses(questions.additional_training, ['yes', 'maybe later', 'हाँ', 'शायद बाद में']);
     const trainingPercentage = ((needsTraining / totalResponses) * 100).toFixed(0);
 
-    // Internet issues
-    const internetIssues = countResponses(questions.internet_problems, ['yes', 'sometimes', 'हाँ', 'कभी-कभी']);
-    const internetPercentage = ((internetIssues / totalResponses) * 100).toFixed(0);
-
     // Target completion
     const targetCompleted = countResponses(questions.monthly_target, ['yes', 'हाँ']);
     const targetPercentage = ((targetCompleted / totalResponses) * 100).toFixed(0);
@@ -153,11 +149,6 @@ function renderStats() {
                 <h3>Training Needs</h3>
                 <div class="value">${trainingPercentage}%</div>
                 <div class="label">Need Additional Training</div>
-            </div>
-            <div class="stat-card" style="background: linear-gradient(135deg, #30cfd0 0%, #330867 100%);">
-                <h3>Internet Issues</h3>
-                <div class="value">${internetPercentage}%</div>
-                <div class="label">Face Connectivity Issues</div>
             </div>
             <div class="stat-card" style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);">
                 <h3>Career Growth</h3>
@@ -306,12 +297,9 @@ function renderResponseSummaryTable() {
 
     const summaryData = [
         { question: 'Tablet Working', key: questions.tablet_working },
-        { question: 'Internet Problems', key: questions.internet_problems },
         { question: 'Clinic Clean', key: questions.clinic_clean },
         { question: 'Feel Safe', key: questions.feel_safe },
-        { question: 'Medicines Available', key: questions.medicines_available },
         { question: 'Managers Helpful', key: questions.managers_helpful },
-        { question: 'Monthly Target', key: questions.monthly_target },
         { question: 'Patient Behavior', key: questions.patient_behavior },
         { question: 'Patient Trust', key: questions.patient_trust },
         { question: 'Proud of Work', key: questions.proud_of_work },
